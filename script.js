@@ -54,19 +54,21 @@ const createBackButtonEventHandler = () => {
 //////////////////////////////////////////////Start Page Render -funktioner.
 
 const createStartPage = () => {
-    let form = document.createElement("form");
-    form.innerHTML = (
-        "<label class='label' for='name'>Namn:</label><br><input type='text' class='input' id='name'><br><label for='pass' class='label'>Lösenord:</label><br><input type='text' id='pass' class='input'><br><br><br><button class='button' id='log-in-btn'>Logga in</button>"
+    let div = document.createElement("div");
+    div.setAttribute("id", "div-form");
+    div.innerHTML = (
+        "<form><label class='label' for='name'>Namn:</label><br><input type='text' class='input' id='name'><br><label for='pass' class='label'>Lösenord:</label><br><input type='text' id='pass' class='input'><br><br><br><button class='button' id='log-in-btn'>Logga in</button></form>"
     );
-    return form;
+    return div;
 }
 
 const appendPage = page => {
     const app = document.getElementById("app");
     if (app.firstChild !== page) {
         app.innerHTML = '';
+        app.appendChild(page);
     }
-    app.appendChild(page);
+
 }
 
 const createLoginButtonEventHandler = () => {
@@ -97,11 +99,24 @@ const createLogoutButtonEventHandler = () => {
 const onLoginBtnClickedEventHandler = () => {
     const namn = document.getElementById("name").value;
     const pass = document.getElementById("pass").value;
-    if (passwordChecksOut(namn, pass)) {
-        loginUser(namn);
-        loadUserPage(namn);
+    if (namn && pass) {
+        if (passwordChecksOut(namn, pass)) {
+            loginUser(namn);
+            loadUserPage(namn);
+        } else {
+            loadLoginFailedPage();
+        }
     } else {
-        loadLoginFailedPage();
+        shakeLoginWindow();
+        paintInputColors(namn, pass);
+        if (!namn) {
+            let nameInp = document.getElementById("name");
+            nameInp.classList.add("red-border");
+        }
+        if (!pass) {
+            let nameInp = document.getElementById("pass");
+            nameInp.classList.add("red-border");
+        }
     }
 }
 
@@ -139,3 +154,31 @@ const logOutUser = () => {
 
 
 
+
+
+//////////////////////////// UI-relaterade funktioner
+
+const shakeLoginWindow = () => {
+    const div = document.getElementById("div-form");
+    div.classList.add("shakey");
+    setTimeout(() => {
+        div.classList.remove("shakey");
+    }, 1000)
+}
+
+const paintInputColors = (namn, pass) => {
+    let nameInp = document.getElementById("name");
+    let passInp = document.getElementById("pass");
+    if (!namn) {
+        nameInp.classList.add("red-border");
+    }
+    if (!pass) {
+        passInp.classList.add("red-border");
+    }
+    if (namn) {
+        nameInp.classList.remove("red-border");
+    }
+    if (pass) {
+        passInp.classList.remove("red-border");
+    }
+}
