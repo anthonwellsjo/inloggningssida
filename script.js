@@ -50,7 +50,7 @@ const createStartPage = () => {
 const appendPage = page => {
     const app = document.getElementById("app");
     //om inte vår vy redan finns så tas föregående vy bort och vår nya vy läggs till
-    console.log("vy koll", app.firstChild, page);
+    console.log("gammal vy:", app.firstChild, "ny vy", page);
     if (app.firstChild !== page) {
         app.innerHTML = '';
         app.appendChild(page);
@@ -125,14 +125,6 @@ const onLoginBtnClickedEventHandler = () => {
     } else {
         shakeLoginWindow();
         paintInputColors(namn, pass);
-        if (!namn) {
-            let nameInp = document.getElementById("name");
-            nameInp.classList.add("red-border");
-        }
-        if (!pass) {
-            let nameInp = document.getElementById("pass");
-            nameInp.classList.add("red-border");
-        }
     }
 }
 
